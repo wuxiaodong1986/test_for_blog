@@ -15,7 +15,7 @@ build/
 gradle/
 out/
 argfile*
-
+src/test/
 
 *.class
 .mtj.tmp/
