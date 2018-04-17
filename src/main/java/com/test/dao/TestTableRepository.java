@@ -17,13 +17,13 @@ public interface TestTableRepository extends JpaRepository<TestTable, Integer>
     TestTable findOne(Integer id);
 
     @CachePut(value = "testTable:findOne", key = "#p0.id")
-    @Caching(evict = {@CacheEvict(value = "testTable:findAll", allEntries=true), @CacheEvict(value = "testTable:findAll2", key = "'1'")})
+    @Caching(evict = {@CacheEvict(value = "testTable:findAll", allEntries=true), @CacheEvict(value = "testTable:findAll2", key = "''")})
     TestTable save(TestTable testTable);
 
-    @Caching(evict = {@CacheEvict(value = "testTable:findOne", key = "#p0"), @CacheEvict(value = "testTable:findAll", allEntries=true), @CacheEvict(value = "testTable:findAll2", key = "'1'")})
+    @Caching(evict = {@CacheEvict(value = "testTable:findOne", key = "#p0"), @CacheEvict(value = "testTable:findAll", allEntries=true), @CacheEvict(value = "testTable:findAll2", key = "''")})
     void delete(Integer id);
 
-    @Cacheable(value = "testTable:findAll2", key = "'1'")
+    @Cacheable(value = "testTable:findAll2", key = "''")
     List<TestTable> findAll();
 
     @Cacheable(value = "testTable:findAll", key = "#p0.pageSize", condition="#p0.pageNumber==0")

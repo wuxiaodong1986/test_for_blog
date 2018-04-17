@@ -25,8 +25,8 @@ public class TestTableRepositoryTest
     {
         TestTable testTable = new TestTable();
         testTable.setId(1);
-        testTable.setName("test1");
-        testTable.setStatus(1);
+        testTable.setName("test2");
+        testTable.setStatus(2);
 
         testTableRepository.save(testTable);
     }
@@ -43,6 +43,13 @@ public class TestTableRepositoryTest
     public void delete() throws Exception
     {
         testTableRepository.delete(1);
+    }
+
+    @Test
+    public void findAll2() throws Exception
+    {
+        List<TestTable> testTables = testTableRepository.findAll();
+        System.out.println(testTables);
     }
 
     @Test
