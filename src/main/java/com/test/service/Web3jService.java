@@ -13,9 +13,8 @@ import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.Request;
-import org.web3j.protocol.core.Response;
+import org.web3j.protocol.core.*;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.EthTransaction;
@@ -86,7 +85,7 @@ public class Web3jService
         //手续费单价
         BigInteger gasPrice = getGasPrice(web3j);
 
-        BigInteger gasLimit = new BigInteger("21000");
+        BigInteger gasLimit = new BigInteger("20000");
 
         //获取地址下交易序号
         BigInteger nonce = getNonce(fromAddress, web3j);
@@ -266,6 +265,15 @@ public class Web3jService
         return nonce;
     }
 
+    public BigDecimal getBalance() throws Exception
+    {
+        Web3j web3j = Web3j.build(new HttpService(serviceUrl));
+        DefaultBlockParameter defaultBlockParameter = new DefaultBlockParameterNumber(5502694);
+        EthGetBalance ethGetBalance = web3j.ethGetBalance("0x74943d5d3fcf1a9846aef48833d55fb22b039dd9", defaultBlockParameter).sendAsync().get();
+        BigDecimal balance = Convert.fromWei(ethGetBalance.getBalance().toString(), Convert.Unit.ETHER);
 
+        System.out.println(balance);
+        return balance;
+    }
 
 }
