@@ -55,7 +55,7 @@ public class Web3jService
         ECKeyPair ecKeyPair = Keys.createEcKeyPair();
         String publicKey = Numeric.toHexStringNoPrefix(ecKeyPair.getPublicKey());
         String privateKey = Numeric.toHexStringNoPrefix(ecKeyPair.getPrivateKey());
-        String address = getAddress(publicKey);
+        String address = getAddress(privateKey);
 
         //生成的以太坊私钥如果首字母为0，会丢弃首字母。此时丢弃该记录重新生成
         if (privateKey.length() != 64)
