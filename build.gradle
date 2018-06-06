@@ -36,5 +36,8 @@ dependencies {
 	compile('mysql:mysql-connector-java:6.0.6')
 	compile('com.zaxxer:HikariCP:2.7.4')
 
+	compile('org.bouncycastle:bcprov-jdk15on:1.59')
+	compile ('org.web3j:core:3.3.1')
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
