@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +53,14 @@ public class TestTableController
     public String updateTestTable2()
     {
         testTableService.updateTestTable2();
+
+        return "sucess";
+    }
+
+    @GetMapping("/updateTestTable3")
+    public String updateTestTable3()
+    {
+        testTableService.updateTestTable3();
 
         return "sucess";
     }

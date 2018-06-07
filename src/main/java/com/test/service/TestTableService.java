@@ -78,4 +78,19 @@ public class TestTableService
 
         System.out.println(1);
     }
+
+//    @Transactional
+    @Transactional(transactionManager="transactionManagerSecondary")
+    public void updateTestTable3()
+    {
+        TestTable testTable = new TestTable();
+        testTable.setName("test");
+        testTable.setStatus(1);
+
+        testTablePrimaryRepository.save(testTable);
+
+        testTableSecondaryRepository.save(testTable);
+
+        System.out.println(1);
+    }
 }
