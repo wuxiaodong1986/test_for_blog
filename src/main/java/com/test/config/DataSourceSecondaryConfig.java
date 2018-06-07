@@ -41,6 +41,10 @@ public class DataSourceSecondaryConfig
     @Value("${spring.datasource.secondary.password}")
     private String secondaryPassword;
 
+    /**
+     * 二库数据源配置
+     * @return
+     */
     @Bean(name = "dataSourceSecondary")
     public DataSource dataSourceSecondary()
     {
@@ -54,6 +58,9 @@ public class DataSourceSecondaryConfig
         return dataSourceSecondary;
     }
 
+    /**
+     * 二库jpa 实例管理器工厂配置
+     */
     @Bean(name = "entityManagerFactorySecondary")
     public LocalContainerEntityManagerFactoryBean entityManagerFactorySecondary(EntityManagerFactoryBuilder builder)
     {
@@ -67,7 +74,9 @@ public class DataSourceSecondaryConfig
         return em;
     }
 
-
+    /**
+     * 二库事务管理器配置
+     */
     @Bean(name = "transactionManagerSecondary")
     public PlatformTransactionManager transactionManagerSecondary(EntityManagerFactoryBuilder builder)
     {
@@ -75,5 +84,4 @@ public class DataSourceSecondaryConfig
         txManager.setEntityManagerFactory(entityManagerFactorySecondary(builder).getObject());
         return txManager;
     }
-
 }

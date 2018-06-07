@@ -40,6 +40,10 @@ public class DataSourcePrimaryConfig
     @Value("${spring.datasource.primary.password}")
     private String primaryPassword;
 
+    /**
+     * 主库数据源配置
+     * @return
+     */
     @Primary
     @Bean(name = "dataSourcePrimary")
     public DataSource dataSourcePrimary()
@@ -54,6 +58,9 @@ public class DataSourcePrimaryConfig
         return dataSourcePrimary;
     }
 
+    /**
+     * 主库jpa 实例管理器工厂配置
+     */
     @Primary
     @Bean(name = "entityManagerFactoryPrimary")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryPrimary(EntityManagerFactoryBuilder builder)
@@ -68,6 +75,9 @@ public class DataSourcePrimaryConfig
         return em;
     }
 
+    /**
+     * 主库事务管理器配置
+     */
     @Primary
     @Bean(name = "transactionManagerPrimary")
     public PlatformTransactionManager transactionManagerPrimary(EntityManagerFactoryBuilder builder)
