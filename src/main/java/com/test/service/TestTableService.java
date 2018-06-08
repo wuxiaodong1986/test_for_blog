@@ -28,6 +28,7 @@ public class TestTableService
 
     public List<TestTable> getTestTables2()
     {
+        //切换数据源至二库
         DBContextHolder.setDbType(DBContextHolder.DB_TYPE_SECONDARY);
         List<TestTable> testTables = testTableRepository.findAll();
 
@@ -36,9 +37,11 @@ public class TestTableService
 
     public List<TestTable> getTestTables3()
     {
+        //拿到默认数据源，即主库数据源
         List<TestTable> testTables1 = testTableRepository.findAll();
-
+        //要求切换到二库数据源
         DBContextHolder.setDbType(DBContextHolder.DB_TYPE_SECONDARY);
+        //因为jpa只拿一次数据源，所以这里依然沿用上一个数据源，即主库数据源。
         List<TestTable> testTables2 = testTableRepository.findAll();
 
         List<TestTable> testTables = new ArrayList<>();
