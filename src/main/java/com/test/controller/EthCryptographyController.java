@@ -1,5 +1,6 @@
 package com.test.controller;
 
+import com.google.gson.Gson;
 import com.test.service.EthCryptographyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +34,15 @@ public class EthCryptographyController
 
         if (fromAddress.equals(address))
         {
+            String privateKey = "2c5a384940835cdf5408a20658eae4c264045b22a5cc4f16ef5bb98f90a8ff93";
+            String message2 = new Gson().toJson(map);
+
+            String sign2 = ethCryptographyService.sign(message2, privateKey);
             response.put("retCode", "0000");
             response.put("retMsg", "验签成功");
+            response.put("message", message2);
+            response.put("address", "0x86af071d2f71239f2ddfe1c18664a9477c156ab1");
+            response.put("sign", sign2);
         }
         else
         {
