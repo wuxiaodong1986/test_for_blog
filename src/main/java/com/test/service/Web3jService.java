@@ -6,18 +6,12 @@ import org.springframework.stereotype.Service;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.TypeReference;
-import org.web3j.abi.datatypes.Address;
-import org.web3j.abi.datatypes.Bool;
-import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.*;
 import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.*;
-import org.web3j.protocol.core.methods.response.EthGetBalance;
-import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
-import org.web3j.protocol.core.methods.response.EthSendTransaction;
-import org.web3j.protocol.core.methods.response.EthTransaction;
+import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Numeric;
@@ -35,7 +29,8 @@ import static org.web3j.abi.Utils.convert;
 @Service
 public class Web3jService
 {
-    private String serviceUrl = "https://mainnet.infura.io/your-token";
+//    private String serviceUrl = "https://mainnet.infura.io/your-token";
+    private String serviceUrl = "https://rinkeby.infura.io/JC3HN6cOqCg4Npu2R6al";
 
     private BigInteger gasPriceMax = new BigInteger("100000000000");
 
@@ -276,4 +271,52 @@ public class Web3jService
         return balance;
     }
 
+    public void getErc20Details() throws Exception
+    {
+        String from = "0xb47dd470763603bdfa81c116954bece051a253e6";
+        String contract = "0xffa62dd5ebc7de1e750119ccd15e3f34e1a7f60e";
+
+        Web3j web3j = Web3j.build(new HttpService(serviceUrl));
+
+        List<Type> inputParameters = new ArrayList<>();
+        List<TypeReference<?>> outputParameters = Arrays.asList(new TypeReference<Utf8String>(){});
+        Function function = new Function("name", inputParameters, outputParameters);
+        String encodedFunction = FunctionEncoder.encode(function);
+        EthCall response = web3j.ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(from, contract, encodedFunction), DefaultBlockParameterName.LATEST).sendAsync().get();
+        List<Type> name = FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
+        System.out.println("name: " + name.get(0).toString());
+
+        function = new Function("symbol", inputParameters, outputParameters);
+        encodedFunction = FunctionEncoder.encode(function);
+        response = web3j.ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(from, contract, encodedFunction), DefaultBlockParameterName.LATEST).sendAsync().get();
+        List<Type> symbol = FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
+        System.out.println("symbol: " + symbol.get(0).toString());
+
+        outputParameters = Arrays.asList(new TypeReference<Uint>(){});
+        function = new Function("decimals", inputParameters, outputParameters);
+        encodedFunction = FunctionEncoder.encode(function);
+        response = web3j.ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(from, contract, encodedFunction), DefaultBlockParameterName.LATEST).sendAsync().get();
+        List<Type> decimals = FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
+        System.out.println("decimals: " + ((Uint) decimals.get(0)).getValue());
+
+        function = new Function("totalSupply", inputParameters, outputParameters);
+        encodedFunction = FunctionEncoder.encode(function);
+        response = web3j.ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(from, contract, encodedFunction), DefaultBlockParameterName.LATEST).sendAsync().get();
+        List<Type> totalSupply = FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
+        System.out.println("totalSupply: " + ((Uint) totalSupply.get(0)).getValue());
+
+        inputParameters = new ArrayList<>();
+        inputParameters.add(new Address(from));
+        function = new Function("balanceOf", inputParameters, outputParameters);
+        encodedFunction = FunctionEncoder.encode(function);
+        response = web3j.ethCall(org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction(from, contract, encodedFunction), DefaultBlockParameterName.LATEST).sendAsync().get();
+        List<Type> balanceOf = FunctionReturnDecoder.decode(response.getValue(), function.getOutputParameters());
+        System.out.println("balanceOf: " + ((Uint) balanceOf.get(0)).getValue());
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        Web3jService web3jService = new Web3jService();
+        web3jService.getErc20Details();
+    }
 }
