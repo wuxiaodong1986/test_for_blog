@@ -1,5 +1,8 @@
 package com.test.service;
 
+import org.ethereum.crypto.ECIESCoder;
+import org.ethereum.util.ByteUtil;
+import org.spongycastle.util.encoders.Hex;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
@@ -43,7 +46,7 @@ public class EthCryptographyService
     public String sign(String messageString, String privateKey) throws Exception
     {
         String prefix =  "\u0019Ethereum Signed Message:\n" + messageString.length();
-        byte[] message = (prefix + messageString).getBytes();
+        byte[] message = (prefix + messageString).getBytes("utf-8");
 
         //生成证书
         ECKeyPair ecKeyPair = ECKeyPair.create(Numeric.toBigInt(privateKey));
@@ -66,7 +69,7 @@ public class EthCryptographyService
     public String getKeyFromSign(String messageString, String signString) throws Exception
     {
         String prefix =  "\u0019Ethereum Signed Message:\n" + messageString.length();
-        byte[] message = (prefix + messageString).getBytes();
+        byte[] message = (prefix + messageString).getBytes("utf-8");
 
         byte[] signBytes = Numeric.hexStringToByteArray(signString);
 
@@ -79,5 +82,38 @@ public class EthCryptographyService
         Sign.SignatureData sign = new Sign.SignatureData(v, r, s);
 
         return Numeric.toHexStringNoPrefix(Sign.signedMessageToKey(message, sign));
+    }
+
+    /**
+     * 用公钥进行加密
+     */
+    public String encrypt(String messageString, String publicKey) throws Exception
+    {
+        return null;
+    }
+
+    /**
+     * 用私钥进行解密
+     */
+    public String decrypt(String encryptString, String privateKey) throws Exception
+    {
+        return null;
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        String privateKey = "2c5a384940835cdf5408a20658eae4c264045b22a5cc4f16ef5bb98f90a8ff93";
+
+        ECKeyPair ecKeyPair = ECKeyPair.create(Numeric.toBigInt(privateKey));
+        String publicKey = Numeric.toHexStringNoPrefix(ecKeyPair.getPublicKey());
+
+        String message = "测试发送信息";
+
+        EthCryptographyService ethCryptographyService = new EthCryptographyService();
+        String encryptMessage = ethCryptographyService.encrypt(message, publicKey);
+
+        String decryptMessage = ethCryptographyService.decrypt(encryptMessage, privateKey);
+
+        System.out.println(message.equals(decryptMessage));
     }
 }
