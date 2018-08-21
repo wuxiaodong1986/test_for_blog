@@ -12,7 +12,9 @@ public class MoneyDemo
     {
         MyMoney myMoney = new MyMoney(99999999);
 
-        myMoney.printMoney(i -> new DecimalFormat("#,###").format(i));
+        Function<Integer, String> moneyFormat = i -> new DecimalFormat("#,###").format(i);
+
+        myMoney.printMoney(moneyFormat.andThen(s -> "人民币：¥ " + s));
     }
 }
 
@@ -30,13 +32,13 @@ class MyMoney
         this.money = money;
     }
 
-    public void printMoney(IMoneyFormat moneyFormat)
-    {
-        System.out.println(moneyFormat.format(this.money));
-    }
+//    public void printMoney(IMoneyFormat moneyFormat)
+//    {
+//        System.out.println(moneyFormat.format(this.money));
+//    }
 
     public void printMoney(Function<Integer, String> moneyFormat)
     {
-        System.out.println(moneyFormat.format(this.money));
+        System.out.println(moneyFormat.apply(this.money));
     }
 }
