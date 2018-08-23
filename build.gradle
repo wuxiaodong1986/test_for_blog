@@ -20,7 +20,7 @@ springBoot {
 }
 
 group = 'com.test'
-sourceCompatibility = 1.8
+sourceCompatibility = 10
 
 repositories {
 	maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
